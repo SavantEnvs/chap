@@ -1,0 +1,13 @@
+project: savantenvs/chap
+target: chap
+
+# File-input (CLI) target: feed the fuzz bytes as a core DUMP file to chap, the core-file analyzer.
+# chap takes the core file as argv[1] and runs its full reader + analysis engine on it (ELF32/ELF64
+# core parsing, libc-malloc heap reconstruction, allocation graph, leak/anchor analysis). The natural
+# fuzz surface is the tool on a core file — not libFuzzer. @@ is the input-file placeholder.
+# Ported from the old integration's file-input target (old: /install/bin/chap @@); path fixed to /mayhem.
+cmds:
+  - cmd: /mayhem/chap @@
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/chap/testsuite

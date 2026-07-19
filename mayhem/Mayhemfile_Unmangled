@@ -1,0 +1,12 @@
+project: savantenvs/chap
+target: unmangled
+
+# libFuzzer target over chap's own C++ symbol demangler (chap::CPlusPlus::Unmangler<char>,
+# src/CPlusPlus/Unmangler.h). The harness (mayhem/fuzz_Unmangled.cpp) feeds the fuzz bytes as a mangled
+# name and runs the unmangler. Ported from the old integration; binary path fixed to /mayhem.
+cmds:
+  - cmd: /mayhem/fuzz_Unmangled
+    libfuzzer: true
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/unmangled/testsuite
